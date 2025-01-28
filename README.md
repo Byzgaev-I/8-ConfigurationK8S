@@ -58,7 +58,7 @@ spec:
 
 ### 2. Исправление проблемы с помощью ConfigMap
 
-### Создаем configmap.yaml:
+### Создаем configmap.yaml
 
 ```yaml
 apiVersion: v1
@@ -97,7 +97,7 @@ data:
     </html>
 ```
 
-### Обнлвляем файл deployment.yaml:
+### Обновляем файл deployment.yaml
 
 ```yaml
 apiVersion: apps/v1
@@ -151,6 +151,13 @@ spec:
 kubectl apply -f configmap.yaml
 kubectl apply -f deployment.yaml
 ```
+
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-2%20ConfigMap.png)
+
+### Проверяем статус пода
+
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-3%20статус%20пода.png)
+
 
 
 
