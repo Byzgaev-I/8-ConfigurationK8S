@@ -8,10 +8,3 @@
    - nginx (порт 80)
    - multitool (порт 8080)
 
-2. Создан ConfigMap с:
-   - конфигурацией nginx
-   - пользовательской веб-страницей
-
-3. Создан Service для доступа к приложению:
-```bash
-kubectl get services
