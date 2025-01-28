@@ -52,7 +52,7 @@ spec:
         ports:
         - containerPort: 80
 ```
-Применяем и конфликт портов. 
+Применяем и видим конфликт портов. 
 
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-1%20конфликт%20портов.png)
 
@@ -159,7 +159,74 @@ kubectl apply -f deployment.yaml
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-3%20статус%20пода.png)
 
 
+Создание Service и проверка доступности веб-страницы
 
+Создаем файл service.yaml
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-multitool-service
+spec:
+  selector:
+    app: nginx-multitool
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: multitool
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+```
+
+### Применяем Service
+
+```bash
+kubectl apply -f service.yaml
+kubectl get services
+```
+### Проверка доступности подов
+
+```bash
+kubectl get pods -o wide
+```
+### Проверка доступа к веб-странице через IP пода
+
+```bash
+curl 10.1.46.6:80
+```
+### Результат:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Nginx</title>
+</head>
+<body>
+    <h1>Welcome to Nginx on Kubernetes!</h1>
+    <p>This page is served via ConfigMap</p>
+</body>
+</html>
+```
+
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-4-5.png) 
+
+
+### Проверка работы multitool
+
+```bash
+curl 10.1.46.6:80
+```
+### Проверка работы multitool:
+
+```text
+WBITT Network MultiTool (with NGINX) - nginx-multitool-6fdf78bb44-lfbmg - 10.1.46.6 - HTTP: 8080 , HTTPS: 443 . (Formerly praqma/network-multitool)
+```
+
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-4-2.png)
 
 
 
