@@ -20,9 +20,9 @@
 
 ### Решение
 
-1. Создан Deployment с двумя контейнерами:
-    nginx (порт 80)
-    multitool (порт 8080)
+1. Создан Deployment с двумя контейнерами:  
+    nginx (порт 80)  
+    multitool (порт 8080)  
 
 ### Создаем файл deployment.yaml:
 ```yaml
