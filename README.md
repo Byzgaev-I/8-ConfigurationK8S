@@ -52,25 +52,105 @@ spec:
         ports:
         - containerPort: 80
 ```
+Применяем и конфликт портов. 
+
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-1%20конфликт%20портов.png)
 
+### 2. Исправление проблемы с помощью ConfigMap
 
+### Создаем configmap.yaml:
 
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-multitool-config
+data:
+  nginx.conf: |
+    events {
+      worker_connections  1024;
+    }
+    http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
 
+      server {
+        listen 80;
+        server_name localhost;
 
+        location / {
+          root /usr/share/nginx/html;
+          index index.html;
+        }
+      }
+    }
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome to Nginx</title>
+    </head>
+    <body>
+        <h1>Welcome to Nginx on Kubernetes!</h1>
+        <p>This page is served via ConfigMap</p>
+    </body>
+    </html>
+```
 
+### Обнлвляем файл deployment.yaml:
 
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-multitool
+  labels:
+    app: nginx-multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-multitool
+  template:
+    metadata:
+      labels:
+        app: nginx-multitool
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: index-html
+          mountPath: /usr/share/nginx/html/
+      - name: multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: multitool
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-multitool-config
+      - name: index-html
+        configMap:
+          name: nginx-multitool-config
+```
 
+### Применяем конфигурации
 
-
-
-
-
-
-
-
-
-
+```bash
+kubectl apply -f configmap.yaml
+kubectl apply -f deployment.yaml
+```
 
 
 
