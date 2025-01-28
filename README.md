@@ -52,6 +52,8 @@ spec:
         ports:
         - containerPort: 80
 ```
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/1-1%20конфликт%20портов.png)
+
 
 
 
