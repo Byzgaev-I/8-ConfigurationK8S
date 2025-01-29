@@ -460,9 +460,29 @@ spec:
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/2-3%20статус%20ingress.png)
 
 
+### Проверка работы HTTPS
+
+Добавляем запись в /etc/hosts
+
+```bash
+sudo bash -c 'echo "127.0.0.1 nginx-multitool.com" >> /etc/hosts'
+```
+
+Проверяем доступность по HTTPS
+
+```bash
+curl -k https://nginx-multitool.com
+```
+
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/2-4%20результата%20curl%20с%20HTTPS.png) 
 
 
+### Результат
 
+- Создан и настроен SSL-сертификат  
+- Настроен HTTPS через Ingress  
+- Веб-страница доступна по HTTPS  
+- Работает редирект с HTTP на HTTPS  
 
 
 
