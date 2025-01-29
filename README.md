@@ -477,6 +477,95 @@ curl -k https://nginx-multitool.com
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/2-4%20результата%20curl%20с%20HTTPS.png) 
 
 
+### Использованные манифесты:
+
+### ingress.yaml
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-multitool-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+    - nginx-multitool.com
+    secretName: nginx-tls-secret
+  rules:
+  - host: nginx-multitool.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-multitool-service
+            port:
+              number: 80
+```
+
+### Обновленный configmap.yaml
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-multitool-config
+data:
+  nginx.conf: |
+    events {
+      worker_connections  1024;
+    }
+    http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+
+      server {
+        listen 80;
+        listen 443 ssl;
+        server_name nginx-multitool.com;
+        
+        ssl_certificate /etc/nginx/ssl/tls.crt;
+        ssl_certificate_key /etc/nginx/ssl/tls.key;
+        
+        location / {
+          root /usr/share/nginx/html;
+          index index.html;
+        }
+      }
+    }
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>HTTPS Nginx on Kubernetes</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background-color: #f0f0f0;
+            }
+            .container {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to HTTPS-enabled Nginx!</h1>
+            <p>This page is served securely via HTTPS</p>
+        </div>
+    </body>
+    </html>
+```
+
+
+
 ### Результат
 
 - Создан и настроен SSL-сертификат  
