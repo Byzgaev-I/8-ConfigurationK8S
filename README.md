@@ -476,6 +476,8 @@ curl -k https://nginx-multitool.com
 
 ![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/2-4%20результата%20curl%20с%20HTTPS.png) 
 
+![image](https://github.com/Byzgaev-I/8-ConfigurationK8S/blob/main/555.png)
+
 
 ### Использованные манифесты:
 
